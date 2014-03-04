@@ -1,0 +1,13 @@
+{
+  "name": "microdom",
+  "version": "0.0.1",
+  "description": "Micro version of jquery + gestures",
+  "homepage": "http://",
+  "author": {
+    "name": "Ignacio Olalde"
+  },
+  "devDependencies": {
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*"
+  }
+}
