@@ -34,6 +34,7 @@
         return this;
     };
 
+
     // Private functions
     function _handleProperty(instance, property, value) {
         return (
