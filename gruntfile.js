@@ -11,13 +11,18 @@ module.exports = function(grunt) {
         source: {
             javascript: [
                 'src/dom.js',
-                'src/dom.ajax.js',
+                'src/dom.utils.js',
+                'src/dom.instance.js',
+                'src/dom.instance.*.js',
                 'src/dom.gesture.js',
-                'src/dom.gesture.*.js'
+                'src/dom.gesture.*.js',
+                'src/dom.ajax.js'
             ]
         },
         uglify: {
             options: {
+                wrap: true,
+                report: "gzip",
                 banner: '<%= meta.banner %>'
             },
             all: {
