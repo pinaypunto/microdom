@@ -10,12 +10,16 @@ var DOM = null;
             command = args[0].match(HTML_RE) ? "create" : "select";
             ret = new DOMInstance(DOMUtils[command](args[0]));
         } else if(typeof args[0] === "object") {
-            ret = new DOMInstance([args[0]]);
+            ret = new DOMInstance(DOM.isArray(args[0]) ? args[0]: [args[0]]);
         } else if(typeof args[0] === "function") {
             document.body.onload = args[0];
         }
         return ret;
     };
+
+    DOM.isArray = function(arr) {
+        return !!arr && arr.constructor == Array;
+    }
 
     window.$ = $ = DOM;
 

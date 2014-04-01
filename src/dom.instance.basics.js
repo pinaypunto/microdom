@@ -1,70 +1,81 @@
 (function($) {
 
+    var _iterator = DOMUtils.iterator;
+
     $.fn.html = function(html) {
-        return _handleProperty(this, "innerHTML", html);
+        return _setOrGet(this, "innerHTML", html, _propSetter, _propGetter);
     };
     $.fn.text = function(text) {
-        return _handleProperty(this, "innerText", text);
+        return _setOrGet(this, "innerText", text, _propSetter, _propGetter);
     };
     $.fn.addClass = function(class_name) {
-        return DOMUtils.set(this, _classSetter("add", class_name));
+        return _iterator(this, _classSetter("add", class_name));
     };
     $.fn.removeClass = function(class_name) {
-        return DOMUtils.set(this, _classSetter("remove", class_name));
+        return _iterator(this, _classSetter("remove", class_name));
     };
     $.fn.toggleClass = function(class_name) {
-        return DOMUtils.set(this, _classSetter("toggle", class_name));
+        return _iterator(this, _classSetter("toggle", class_name));
     };
     $.fn.css = function(property, value) {
-        return (
-            value ? 
-            DOMUtils.set(this, _styleSetter(property, value)) :
-            DOMUtils.get(this, _styleGetter(property))
-        );
+        return _setOrGet(this, property, value, _styleSetter, _styleGetter);
     };
     $.fn.attr = function(attribute, value) {
-        return (
-            value ? 
-            DOMUtils.set(this, _attrSetter(attribute, value)) :
-            DOMUtils.get(this, _attrGetter(attribute))
-        );
-    }
+        return _setOrGet(this, attribute, value, _attrSetter, _attrGetter);
+    };
+    $.fn.data = function(attribute, value) {
+        return this.attr("data-" + attribute, value);
+    };
     $.fn.removeAttr = function(attribute) {
-        this.each(function(el) { el.removeAttribute(attribute); });
-        return this;
+        return _iterator(this, function(el) { 
+            el.removeAttribute(attribute); 
+        });
     };
 
 
     // Private functions
-    function _handleProperty(instance, property, value) {
+    function _setOrGet(instance, property, value, setter_cb, getter_cb) {
         return (
             value ? 
-            DOMUtils.set(instance, _propSetter(property, value)) :
-            DOMUtils.get(instance, _propGetter(property))
+            _iterator(instance, setter_cb(property, value)) :
+            _iterator(instance, getter_cb(property))
         );
-    };
+    }
     function _classSetter(command_name, class_name) {
-        return function(el) { el.classList[command_name](class_name); };
-    };
+        return function(el) { 
+            el.classList[command_name](class_name); 
+        };
+    }
     function _styleSetter(property, value) {
-        return function(el) { el.style.setProperty(property, value); };
-    };
+        return function(el) { 
+            el.style.setProperty(property, value); 
+        };
+    }
     function _styleGetter(property) {
-        return function(el) { return el.style.getPropertyValue(property); };
-    };
+        return function(el) { 
+            return el.style.getPropertyValue(property); 
+        };
+    }
     function _propSetter(property, value) {
-        return function(el) { el[property] = value; }
-    };
+        return function(el) { 
+            el[property] = value; 
+        };
+    }
     function _propGetter(property) {
-        return function(el) { return el[property]; };
-    };
+        return function(el) { 
+            return el[property]; 
+        };
+    }
     function _attrSetter(attribute, value) {
-        return function(el) { el.setAttribute(attribute, value); }
-    };
+        return function(el) { 
+            el.setAttribute(attribute, value); 
+        };
+    }
     function _attrGetter(attribute) {
-        return function(el) { return el.getAttribute(attribute); };
-    };
+        return function(el) { 
+            return el.getAttribute(attribute); 
+        };
+    }
 
 
 })(DOM);
-
